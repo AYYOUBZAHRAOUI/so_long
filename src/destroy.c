@@ -6,7 +6,7 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 01:18:28 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 01:23:48 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 05:47:24 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,3 @@ void	ft_free(t_map *map, char **str)
 	free(*str);
 	str = NULL;
 }
-

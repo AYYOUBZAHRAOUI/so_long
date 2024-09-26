@@ -6,7 +6,7 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:24:46 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 01:47:13 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 05:57:26 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,26 @@
 
 // this function take the map struct and check if the map have
 // only one player and one exit
-void have_one_player_and_exit(t_map *map)
+void	have_one_player_and_exit(t_map *map)
 {
-	int i;
-	int j;
-	int player;
-	int exi;
+	int	i;
+	int	j;
+	int	player;
+	int	exi;
 
-	i = 0;
+	i = -1;
 	player = 0;
 	exi = 0;
-	while (map->arr[i])
+	while (map->arr[++i])
 	{
-		j = 0;
-		while (map->arr[i][j])
+		j = -1;
+		while (map->arr[i][++j])
 		{
 			if (map->arr[i][j] == 'P')
 				player++;
 			if (map->arr[i][j] == 'E')
 				exi++;
-			j++;
 		}
-		i++;
 	}
 	if (player != 1 || exi != 1)
 	{
@@ -47,10 +45,10 @@ void have_one_player_and_exit(t_map *map)
 
 // this function take the map struct and check if the map have
 // any invalid character
-void have_valid_characters(t_map *map)
+void	have_valid_characters(t_map *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (map->arr[i])
@@ -74,10 +72,10 @@ void have_valid_characters(t_map *map)
 
 // this function take the map struct and check if the map have
 // a wall around it
-void have_wall_around(t_map *map)
+void	have_wall_around(t_map *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = -1;
 	while (map->arr[++i])
@@ -91,23 +89,20 @@ void have_wall_around(t_map *map)
 				{
 					free_arr(map->arr);
 					free(map);
-					exit(write(2, "Error\nmap must have a wall around it.\n", 39));
+					write(2, "Error\nmap must have a wall around it.\n", 39);
+					exit(1);
 				}
 			}
 		}
 	}
 }
 
-
-
-
-
 // this function take the map struct and check if the map
 // return to the player position
-void get_player_position(t_map *map)
+void	get_player_position(t_map *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = -1;
 	while (map->arr[++i])
@@ -119,19 +114,18 @@ void get_player_position(t_map *map)
 			{
 				map->player.x = j;
 				map->player.y = i;
-				break;
+				break ;
 			}
 		}
 	}
 }
 
-
 // this function take the map struct and return a copy of the map->arr
 // this NULL terminator give me a segmentation fault
-static char **copy_map(t_map *map)
+static char	**copy_map(t_map *map)
 {
-	char **copy;
-	int i;
+	char	**copy;
+	int		i;
 
 	copy = malloc(sizeof(char *) * map->rows);
 	i = 0;
@@ -143,10 +137,9 @@ static char **copy_map(t_map *map)
 	return (copy);
 }
 
-
 // this function take a copy of the map->arr and the player position
 // and fill the map with 'T' where the player can access
-void player_access_all_map(char **maparr, int x, int y)
+void	player_access_all_map(char **maparr, int x, int y)
 {
 	if (maparr[y][x] == '1' || maparr[y][x] == 'T')
 		return ;
@@ -167,11 +160,11 @@ void player_access_all_map(char **maparr, int x, int y)
 // this function create the copy of the map->arr and the player position
 // and fill the map with 'T' where the player can access
 // and check if the player can access all the map
-void player_access_map(t_map *map)
+void	player_access_map(t_map *map)
 {
-	char **copy;
-	int i;
-	int j;
+	char	**copy;
+	int		i;
+	int		j;
 
 	i = 0;
 	copy = copy_map(map);
@@ -186,7 +179,7 @@ void player_access_map(t_map *map)
 			{
 				free_arr(map->arr);
 				free_arr_v2(copy, map->rows);
-				free(map);// need to test this
+				free(map);
 				exit(write(2, "Error\nplayer can't access all the map.\n", 40));
 			}
 			j++;
@@ -196,11 +189,11 @@ void player_access_map(t_map *map)
 	free_arr_v2(copy, map->rows);
 }
 
-void rectangular(t_map *map)
+void	rectangular(t_map *map)
 {
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	i = 0;
 	map->cols = ft_strlen(map->arr[i]);
 	while (i < map->rows)
@@ -208,7 +201,7 @@ void rectangular(t_map *map)
 		j = ft_strlen(map->arr[i]);
 		if (j != map->cols)
 		{
-			free_arr(map->arr);// i need to free the map to;
+			free_arr(map->arr);
 			free(map);
 			exit(write(2, "Error\nthe map must be rectangular\n", 34));
 		}
@@ -218,13 +211,12 @@ void rectangular(t_map *map)
 
 // this function take the map struct
 // and check if the map is valid
-void check_map(t_map *map)
+void	check_map(t_map *map)
 {
-	// printf("map -> rows = %i\n", map->rows);
 	rectangular(map);
 	have_valid_characters(map);
 	have_one_player_and_exit(map);
 	have_wall_around(map);
-	get_player_position(map); // done
-	player_access_map(map); // done
+	get_player_position(map);
+	player_access_map(map);
 }

@@ -6,7 +6,7 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 20:19:17 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 04:09:44 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 14:07:43 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 // this fuction take the file name and the map struct
 // and fill the map struct with the map information
-void get_map_in_arr(char *file_name, t_map *map)
+void	get_map_in_arr(char *file_name, t_map *map)
 {
 	int		fd;
 	char	*line;
-	char 	*bigline;
+	char	*bigline;
+	int		i;
 
-	bigline =  ft_calloc(sizeof(char *), 1); 
+	i = 0;
+	bigline = ft_calloc(sizeof(char *), 1); 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
@@ -28,36 +30,39 @@ void get_map_in_arr(char *file_name, t_map *map)
 		exit(write(2, "Error\nfile doesn't found\n", 25));
 	}
 	line = get_next_line(fd);
-	while (line)
+	while (line && ++i)
 	{
-		bigline = ft_strjoin_free(bigline,line);
+		bigline = ft_strjoin_free(bigline, line);
 		free(line);
 		line = get_next_line(fd);
 	}
-	map->arr = ft_split(bigline,'\n');
+	map->rows = i;
+	map->arr = ft_split(bigline, '\n');
 	free(bigline);
 	close(fd);
-
 }
 
-
-void row(t_map *map)
+void	row(t_map *map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map->arr[i])
 		i++;
-	map->rows = i;
+	if (map->rows != i)
+	{
+		free_arr(map->arr);
+		free(map);
+		exit(write(1, "Error\nYou have empty lines in map file.\n", 40));
+	}
 }
-
 
 // this fuction take the map struct and fill the collectibles variable
 // and check if the map has collectibles
-void get_map_collectibles(t_map *map)
+void	get_map_collectibles(t_map *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = -1;
 	map->collectibles = 0;
@@ -80,9 +85,8 @@ void get_map_collectibles(t_map *map)
 
 // this fuction create a map struct and fill it with the map information
 // and return the map struct
-void get_map(char *file_name, t_map *map)
+void	get_map(char *file_name, t_map *map)
 {
-	
 	get_map_in_arr(file_name, map);
 	row(map);
 	get_map_collectibles(map);

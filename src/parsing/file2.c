@@ -6,16 +6,16 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:08:43 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/25 02:47:24 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 05:50:03 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/solong.h"
 
 // this fuction take the file name and check if the extention is valid
-int check_extention(char *file_name)
+int	check_extention(char *file_name)
 {
-	int i;
+	int	i;
 
 	i = ft_strlen(file_name);
 	if ((i < 5) 
@@ -29,9 +29,9 @@ int check_extention(char *file_name)
 }
 
 // this fuction take a char **arr and free it
-void free_arr(char **arr)
+void	free_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arr[i])
@@ -41,9 +41,9 @@ void free_arr(char **arr)
 	free(arr);
 }
 
-void free_arr_v2(char **arr, int x)
+void	free_arr_v2(char **arr, int x)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < x)

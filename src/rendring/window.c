@@ -6,17 +6,17 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 02:18:44 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 02:18:45 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 06:09:07 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/solong.h"
 #include "../include/MLX42.h"
 
-void fill_background(t_map *map)
+void	fill_background(t_map *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (map->arr[i])
@@ -24,20 +24,22 @@ void fill_background(t_map *map)
 		j = 0;
 		while (map->arr[i][j])
 		{
-			mlx_image_to_window(map->x, map->images->bg, j*60, i*60);
+			mlx_image_to_window(map->x, map->images->bg, j * 60, i * 60);
 			if (map->arr[i][j] == '1')
-				mlx_image_to_window(map->x, map->images->wl, j*60, i*60);
+				mlx_image_to_window(map->x, map->images->wl, j * 60, i * 60);
 			if (map->arr[i][j] == 'P')
-				mlx_image_to_window(map->x, map->images->pl, j*60, i*60);
+				mlx_image_to_window(map->x, map->images->pl, j * 60, i * 60);
 			if (map->arr[i][j] == 'E')
-				mlx_image_to_window(map->x, map->images->ex, j*60, i*60);
+				mlx_image_to_window(map->x, map->images->ex, j * 60, i * 60);
 			if (map->arr[i][j] == 'C')
-				mlx_image_to_window(map->x, map->images->col, j*60+10, i*60+10);
+				mlx_image_to_window(map->x, map->images->col,
+					j * 60 + 10, i * 60 + 10);
 			j++;
 		}
 		i++;
 	}
 }
+
 void	textures_error(t_map *map)
 {
 	if (map->textures->pl == NULL || map->textures->ex == NULL
@@ -51,7 +53,7 @@ void	textures_error(t_map *map)
 	}
 }
 
-void load_textures_images(t_map *map)
+void	load_textures_images(t_map *map)
 {
 	map->images = malloc(sizeof(t_images));
 	map->textures = malloc(sizeof(t_textures));
@@ -68,9 +70,8 @@ void load_textures_images(t_map *map)
 	map->images->ex = mlx_texture_to_image(map->x, map->textures->ex);
 }
 
-void rendering_map(t_map *map)
+void	rendering_map(t_map *map)
 {
 	load_textures_images(map);
 	fill_background(map);
-
 }

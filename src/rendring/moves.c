@@ -6,24 +6,26 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:05:41 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 02:49:41 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 14:48:12 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/solong.h"
 
-void free_map_exit(t_map *map)
+void	free_map_exit(t_map *map)
 {
 	free_arr(map->arr);
 	mlx_close_window(map->x);
 	mlx_terminate(map->x);
+	// free(map->images);
+	// free(map->textures);
 	free(map);
 	exit(1);
 }
 
 void	put_nbr(int x)
 {
-	char		*digit;
+	char	*digit;
 
 	digit = "0123456789";
 	if (x >= 10)
@@ -31,18 +33,18 @@ void	put_nbr(int x)
 	write(1, digit + (x % 10), 1);
 }
 
-void count_moves(void)
+void	count_moves(void)
 {
-	static int x;
-	
+	static int	x;
+
 	x++;
 	write(1, "move : ", 8);
 	put_nbr(x);
 	write(1, "\n", 1);
 }
 
-void keys_handel(mlx_key_data_t key, void *map)
-{	
+void	keys_handel(mlx_key_data_t key, void *map)
+{
 	if (key.action == MLX_PRESS || key.action == MLX_REPEAT)
 	{
 		if (key.key == MLX_KEY_LEFT || key.key == MLX_KEY_A)
@@ -60,31 +62,31 @@ void keys_handel(mlx_key_data_t key, void *map)
 	}
 }
 
-void move(t_map *map, int x, int y)
+void	move(t_map *map, int x, int y)
 {
-	int new_pos_x;
-	int new_pos_y;
+	int	nx;
+	int	ny;
 
-	new_pos_x = map->player.x + (x / 60);
-	new_pos_y = map->player.y + (y /60);
-	if (map->arr[new_pos_y][new_pos_x] != '1' && map->arr[new_pos_y][new_pos_x] != 'E')
+	nx = map->player.x + (x / 60);
+	ny = map->player.y + (y / 60);
+	if (map->arr[ny][nx] != '1' && map->arr[ny][nx] != 'E')
 	{
 		count_moves();
-		if (map->arr[new_pos_y][new_pos_x] == 'C' && map->collectibles--)
-			map->arr[new_pos_y][new_pos_x] = '0';
-		mlx_image_to_window(map->x, map->images->bg, new_pos_x*60, new_pos_y*60);
-		mlx_image_to_window(map->x, map->images->pl, new_pos_x*60, new_pos_y*60);
-		mlx_image_to_window(map->x, map->images->bg, map->player.x*60, map->player.y*60);
-		map->player.x = new_pos_x;
-		map->player.y = new_pos_y;
+		if (map->arr[ny][nx] == 'C' && map->collectibles--)
+			map->arr[ny][nx] = '0';
+		mlx_image_to_window(map->x, map->images->bg, nx * 60, ny * 60);
+		mlx_image_to_window(map->x, map->images->pl, nx * 60, ny * 60);
+		mlx_image_to_window(map->x, map->images->bg, map->player.x * 60,
+			map->player.y * 60);
+		map->player.x = nx;
+		map->player.y = ny;
 	}
 	if (map->collectibles == 0)
 	{
-		if (map->arr[new_pos_y][new_pos_x] == 'E')
+		if (map->arr[ny][nx] == 'E')
 		{
 			count_moves();
 			free_map_exit(map);
 		}
-			
 	}
 }
