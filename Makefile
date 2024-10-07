@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/09/26 22:03:36 by ayzahrao          #+#    #+#              #
+#    Updated: 2024/09/26 23:24:27 by ayzahrao         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
@@ -5,14 +17,19 @@ CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 # Directories
 SRC_DIR = src
 INC_DIR = include
+MLXHEADERS = ~/MLX/include/MLX42/
 LIBFT_DIR = libft
 GETNEXTLINE_DIR = get_next_line
 OBJ_DIR = obj
 
 # Source files # you need to edit this line after adding new files
-SRC_FILES =	$(wildcard $(SRC_DIR)/*.c)
-SRC_FILES += $(wildcard $(SRC_DIR)/parsing/*.c)
-SRC_FILES += $(wildcard $(SRC_DIR)/rendring/*.c)
+SRC_FILES = src/main.c \
+			src/parsing/check_thing_1.c \
+			src/parsing/check_thing_2.c	\
+			src/parsing/check_thing_3.c	\
+			src/parsing/get_map.c \
+			src/rendring/fill_window.c \
+			src/rendring/moves.c
 
 # Object files
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
@@ -27,7 +44,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 # Get_next_line
 GETNEXTLINE = $(GETNEXTLINE_DIR)/get_next_line.a
 
-MLX = libmlx42.a -ldl -lglfw -pthread -lm
+MLX = ~/MLX42/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 # Targets
 all: $(LIBFT) $(GETNEXTLINE) $(NAME)
@@ -47,12 +64,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/parsing
 	@mkdir -p $(OBJ_DIR)/rendring
-	@$(CC) $(CFLAGS)  -I $(INC_DIR) -c $< -o $@
+	@$(CC) $(CFLAGS)  -I$(INC_DIR) -I$(MLXHEADERS) -c $< -o $@
 # -I $(LIBFT_DIR) : specify the directory where the header files are located
 
 # Rule to create executable
 $(NAME): $(OBJ_FILES)
-	$(CC) $(CFLAGS) -I$(INC_DIR)  $(OBJ_FILES) $(LIBFT) $(GETNEXTLINE) $(MLX) -o $(NAME)
+	$(CC) $(CFLAGS) -I$(INC_DIR) -I$(MLXHEADERS)  $(OBJ_FILES) $(LIBFT) $(GETNEXTLINE) $(MLX) -o $(NAME)
 # -I $(LIBFT_DIR) : specify the directory where the header files are located
 
 # Rule to clean object files

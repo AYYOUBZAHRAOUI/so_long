@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file2.c                                            :+:      :+:    :+:   */
+/*   check_thing_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 00:08:43 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 05:50:03 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 23:09:30 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_extention(char *file_name)
 		|| file_name[i - 1] != 'r' || file_name[i - 2] != 'e' 
 		|| file_name[i - 3] != 'b' || file_name[i - 4] != '.')
 	{
-		write(2, "Error: put a valid file name.\n", 30);
+		write(2, "Error\nput a valid file name.\n", 29);
 		exit(1);
 	}
 	return (1);
@@ -51,4 +51,40 @@ void	free_arr_v2(char **arr, int x)
 		free(arr[i++]);
 	}
 	free(arr);
+}
+
+// this function take the map struct and return a copy of the map->arr
+// this NULL terminator give me a segmentation fault
+char	**copy_map(t_map *map)
+{
+	char	**copy;
+	int		i;
+
+	copy = malloc(sizeof(char *) * map->rows);
+	i = 0;
+	while (map->arr[i])
+	{
+		copy[i] = ft_strdup(map->arr[i]);
+		i++;
+	}
+	return (copy);
+}
+
+// this function take a copy of the map->arr and the player position
+// and fill the map with 'T' where the player can access
+void	player_access_all_map(char **maparr, int x, int y)
+{
+	if (maparr[y][x] == '1' || maparr[y][x] == 'T'
+		|| maparr[y][x] == 'E')
+		return ;
+	if (maparr[y][x] == 'P')
+		maparr[y][x] = 'T';
+	if (maparr[y][x] == 'C')
+		maparr[y][x] = 'T';
+	if (maparr[y][x] == '0')
+		maparr[y][x] = 'T';
+	player_access_all_map(maparr, x + 1, y);
+	player_access_all_map(maparr, x - 1, y);
+	player_access_all_map(maparr, x, y + 1);
+	player_access_all_map(maparr, x, y - 1);
 }

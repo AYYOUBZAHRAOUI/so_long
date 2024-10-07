@@ -6,7 +6,7 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:58:20 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 05:43:10 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 23:27:57 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include "../libft/include/libft.h"
 # include "../get_next_line/get_next_line_bonus.h"
-# include "MLX42.h"
+# include "/Users/ayzahrao/MLX42/include/MLX42/MLX42.h"
 # include <fcntl.h>
 
 typedef struct s_player
@@ -49,8 +49,8 @@ typedef struct s_map
 	int			cols;
 	int			collectibles;
 	t_player	player;
-	t_images	*images;
-	t_textures	*textures;
+	t_images	images;
+	t_textures	textures;
 	mlx_t		*x;
 }	t_map;
 
@@ -67,11 +67,13 @@ void	get_player_position(t_map *map);
 void	player_access_map(t_map *map);
 void	check_map(t_map *map);
 char	*ft_strjoin_free(char *s1, char *s2);
-
+void	player_access_all_map(char **maparr, int x, int y);
 void	rendering_map(t_map *map);
 void	load_textures_images(t_map *map);
 void	keys_handel(mlx_key_data_t key, void *map);
 void	move(t_map *map, int x, int y);
-void	ft_free(t_map *map, char **str);
+void	close_handel(void *map);
+void	free_map_exit(t_map *map);
+char	**copy_map(t_map *map);
 
 #endif

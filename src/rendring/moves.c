@@ -6,7 +6,7 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 15:05:41 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 14:48:12 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 23:26:47 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@ void	free_map_exit(t_map *map)
 	free_arr(map->arr);
 	mlx_close_window(map->x);
 	mlx_terminate(map->x);
-	// free(map->images);
-	// free(map->textures);
-	free(map);
 	exit(1);
 }
 
@@ -74,9 +71,9 @@ void	move(t_map *map, int x, int y)
 		count_moves();
 		if (map->arr[ny][nx] == 'C' && map->collectibles--)
 			map->arr[ny][nx] = '0';
-		mlx_image_to_window(map->x, map->images->bg, nx * 60, ny * 60);
-		mlx_image_to_window(map->x, map->images->pl, nx * 60, ny * 60);
-		mlx_image_to_window(map->x, map->images->bg, map->player.x * 60,
+		mlx_image_to_window(map->x, map->images.bg, nx * 60, ny * 60);
+		mlx_image_to_window(map->x, map->images.pl, nx * 60, ny * 60);
+		mlx_image_to_window(map->x, map->images.bg, map->player.x * 60,
 			map->player.y * 60);
 		map->player.x = nx;
 		map->player.y = ny;

@@ -6,7 +6,7 @@
 /*   By: ayzahrao <ayzahrao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 20:19:17 by ayzahrao          #+#    #+#             */
-/*   Updated: 2024/09/26 14:07:43 by ayzahrao         ###   ########.fr       */
+/*   Updated: 2024/09/26 22:42:20 by ayzahrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,27 @@ void	get_map_in_arr(char *file_name, t_map *map)
 {
 	int		fd;
 	char	*line;
-	char	*bigline;
+	char	*big_line;
 	int		i;
 
 	i = 0;
-	bigline = ft_calloc(sizeof(char *), 1); 
+	big_line = ft_calloc(sizeof(char *), 1); 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_free(map, &bigline);
+		free(big_line);
 		exit(write(2, "Error\nfile doesn't found\n", 25));
 	}
 	line = get_next_line(fd);
 	while (line && ++i)
 	{
-		bigline = ft_strjoin_free(bigline, line);
+		big_line = ft_strjoin_free(big_line, line);
 		free(line);
 		line = get_next_line(fd);
 	}
 	map->rows = i;
-	map->arr = ft_split(bigline, '\n');
-	free(bigline);
+	map->arr = ft_split(big_line, '\n');
+	free(big_line);
 	close(fd);
 }
 
@@ -52,8 +52,7 @@ void	row(t_map *map)
 	if (map->rows != i)
 	{
 		free_arr(map->arr);
-		free(map);
-		exit(write(1, "Error\nYou have empty lines in map file.\n", 40));
+		exit(write(2, "Error\nYou have empty lines in map file.\n", 40));
 	}
 }
 
@@ -78,7 +77,6 @@ void	get_map_collectibles(t_map *map)
 	if (map->collectibles == 0)
 	{
 		free_arr((map->arr));
-		free(map);
 		exit(write(2, "Error\nmap has no collectibles or is empty.\n", 43));
 	}
 }
